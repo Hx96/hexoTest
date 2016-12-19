@@ -84,15 +84,19 @@
 
 
 
-<meta name="description" content="this is the description">
-<meta property="og:type" content="website">
+<meta name="description" content="title: 汇编考试总结
+1.汇编的两种程序结构的写法段的完整定义12345678910111213141516171819202122232425262728data segment  hello db &amp;apos;hello world&amp;apos;,0dh,0ah,&amp;apos;$&amp;apos;data ends;定义一个段，用于存放所编写的指令;assume用于通知编译器，名字为CODE的段是">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Huangxing's Notes">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/12/19/汇编考试总结/index.html">
 <meta property="og:site_name" content="Huangxing's Notes">
-<meta property="og:description" content="this is the description">
+<meta property="og:description" content="title: 汇编考试总结
+1.汇编的两种程序结构的写法段的完整定义12345678910111213141516171819202122232425262728data segment  hello db &amp;apos;hello world&amp;apos;,0dh,0ah,&amp;apos;$&amp;apos;data ends;定义一个段，用于存放所编写的指令;assume用于通知编译器，名字为CODE的段是">
+<meta property="og:updated_time" content="2016-12-19T03:52:42.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Huangxing's Notes">
-<meta name="twitter:description" content="this is the description">
+<meta name="twitter:description" content="title: 汇编考试总结
+1.汇编的两种程序结构的写法段的完整定义12345678910111213141516171819202122232425262728data segment  hello db &amp;apos;hello world&amp;apos;,0dh,0ah,&amp;apos;$&amp;apos;data ends;定义一个段，用于存放所编写的指令;assume用于通知编译器，名字为CODE的段是">
 
 
 
@@ -110,7 +114,7 @@
   };
 </script>
 
-  <title> Huangxing's Notes </title>
+  <title>  | Huangxing's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -131,9 +135,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -210,9 +212,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -233,9 +235,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/12/19/汇编考试总结/" itemprop="url">
-                  Tidak ada title
-                </a>
               
             
           </h1>
@@ -275,24 +274,25 @@
       
 
       
-        
-          
-            <p>title: 汇编考试总结</p>
+        <p>title: 汇编考试总结</p>
 <h1 id="1-汇编的两种程序结构的写法"><a href="#1-汇编的两种程序结构的写法" class="headerlink" title="1.汇编的两种程序结构的写法"></a>1.汇编的两种程序结构的写法</h1><h2 id="段的完整定义"><a href="#段的完整定义" class="headerlink" title="段的完整定义"></a>段的完整定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">data segment</div><div class="line">  hello db &apos;hello world&apos;,0dh,0ah,&apos;$&apos;</div><div class="line">data ends</div><div class="line"></div><div class="line">;定义一个段，用于存放所编写的指令</div><div class="line">;assume用于通知编译器，名字为CODE的段是代码，名字为DATA的段为数据，编译方法不一样</div><div class="line">;9号功能调用要求字符串的段地址放到DS中，偏移地址放到DX中</div><div class="line">;4c号功能调用为结束本应用程序，将CPU控制权返回给操作系统(C语言MAIN函数的return 0;)</div><div class="line">;end为关键字，其后的标号（本例为start）表示程序的入口地址在哪（从哪里开始执行）</div><div class="line"></div><div class="line">code segment</div><div class="line">assume cs:code,ds:data</div><div class="line">start:</div><div class="line">;初始化数据段寄存器，保证访问到的是程序员自己定义的数据（逻辑地中的段地址）</div><div class="line">   mov ax,data</div><div class="line">   mov ds,ax</div><div class="line"></div><div class="line">;开始输出字符串</div><div class="line">   lea dx,hello		;调用9号系统功能，DS:DX存放字符串的地址</div><div class="line">   mov ah,9</div><div class="line">   int 21h</div><div class="line"></div><div class="line">;结束程序的运行</div><div class="line">   mov al,0</div><div class="line">   mov ah,4ch		;调用4C号功能，返回一个0给操作系统，表示程序执行成功</div><div class="line">   int 21h</div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">data segment</div><div class="line">ab 5</div><div class="line">data ends</div><div class="line"></div><div class="line">stack segment stack &apos;stack&apos;</div><div class="line">dw 1024 dup(0)</div><div class="line">stack ends</div><div class="line"></div><div class="line">extra segment</div><div class="line">db 6</div><div class="line">extra ends</div><div class="line"></div><div class="line">code segment</div><div class="line">assume cs:code,ds:data,ss:stack</div><div class="line">start:</div><div class="line">mov ax,data</div><div class="line">mov ds,ax</div><div class="line">mov ax,extra</div><div class="line">mov es,ax</div><div class="line"></div><div class="line">mov ax,4c00h</div><div class="line">int 21h</div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
 <h2 id="段的简化定义形式"><a href="#段的简化定义形式" class="headerlink" title="段的简化定义形式"></a>段的简化定义形式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">.model small		;说明采用小模型</div><div class="line">.stack 1024			;说明定义堆栈段</div><div class="line">.data				;说明数据段开始</div><div class="line">mess db &apos;hello&apos;,0dh,0ah,&apos;$&apos;</div><div class="line">.code 				;说明代码段开始</div><div class="line">start:</div><div class="line">	mov ax,dgroup	;说明代码段的开始</div><div class="line">	mov ds,ax		;置入数据段寄存器ds</div><div class="line">	mov dx,offset mess</div><div class="line">	mov ah,09h</div><div class="line">	int 21h</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">	end start		;程序结束</div></pre></td></tr></table></figure>
 <h1 id="2-硬件的操作方法"><a href="#2-硬件的操作方法" class="headerlink" title="2.硬件的操作方法"></a>2.硬件的操作方法</h1><h2 id="and，or操作指令"><a href="#and，or操作指令" class="headerlink" title="and，or操作指令"></a>and，or操作指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">and;将数据清零就是复位 例子:and al,07f</div><div class="line">or将数据置1		  例子:or al,01h将最低位置1</div></pre></td></tr></table></figure>
 <h2 id="宏-简单的带参数的宏"><a href="#宏-简单的带参数的宏" class="headerlink" title="宏:简单的带参数的宏"></a>宏:简单的带参数的宏</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">;程序片段使用次数过多，为了避免重复书写，那么可以把它定义成为一条宏指令</div><div class="line">;定义格式</div><div class="line"></div><div class="line">;宏指令名 macro [形式参数表]</div><div class="line">;endm</div><div class="line"></div><div class="line">;macro和endm是一对伪指令宏定义时必须成对出现</div><div class="line"></div><div class="line">;实例:将dos1号功能从键盘读入一个字符的程序片段定义为一个宏</div><div class="line">getchar macro</div><div class="line">	mov ah,01h</div><div class="line">	int 21h</div><div class="line">	endm</div></pre></td></tr></table></figure>
-          
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
@@ -300,409 +300,32 @@
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/12/17/2016年12月6级作文/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2016/12/17/2016年12月6级作文/" itemprop="url">
-                  Tidak ada title
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Diposting di</span>
-            <time itemprop="dateCreated" datetime="2016-12-17T21:30:39+08:00" content="2016-12-17">
-              2016-12-17
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="2016年12月6级作文"><a href="#2016年12月6级作文" class="headerlink" title="2016年12月6级作文"></a>2016年12月6级作文</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>:happy:作文题目,6级就这样结束了并没有怎么准备，于是作文和翻译烂得一塌糊涂。作文也是比较奇怪就一个单词来写文章。</p>
-<h2 id="作文答案"><a href="#作文答案" class="headerlink" title="作文答案"></a>作文答案</h2><p>题目:Directions: For this part, you are allowed 30 minutes to write a short essay on invention. Your essay should include the importance of invention and measures to be taken to encourage invention.You are required to write at least 150 words but no more than 200 words。</p>
-<h3 id="参考范文"><a href="#参考范文" class="headerlink" title="参考范文"></a>参考范文</h3><p>​    Of all the elements that promote the development of our society, perhaps the most far-reaching has been invention. It is difficult to the point of impossibility for people to imagine a time without invention because it is the invention that enhances our society in all aspects.</p>
-<p>　　Invention indeed plays an essential role in our life. Had it not been for it, we could not have lived in a modern society. Invention is momentous and fundamental to people what the soul is vital and significant to us. Given this, what can we do to cultivate this precious spirit ?</p>
-<p>　　The measures, to my mind, are listed as following. To begin with, the authorities concerned should set up favorable laws and regulations to encourage invention.For example, we can set up the practice of giving premiums to inventors. What is more, the public are expected to realize the significance of invention, so that they can try their best to invent things. Last but not least, the press should place more value on invention. Though there is a long way to go, I firmly believe that our combined efforts will be rewarded at last.</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/16/my-first-site/" itemprop="url">
-                  my first site
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Diposting di</span>
-            <time itemprop="dateCreated" datetime="2016-12-16T10:00:15+08:00" content="2016-12-16">
-              2016-12-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome!!!</p>
-<h2 id="Bingo"><a href="#Bingo" class="headerlink" title="Bingo!!!"></a>Bingo!!!</h2><h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>这是第一次在网站上建立自己的博客，很兴奋终于可以访问自己的网站了。讲一下建立的过程，首先使用的是hexo建立站点。需要用到的是git+nodejs。加起来也就100w左右并不占用内存空间</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>使用的是GitHub的服务器，当你访问域名huangxing.online的时候会指向到192.30.252.153，然后就会在GitHub的用户的Cname里面查找这个域名huangxing.online。查找完成后，返回静态网页。</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>静态网页，只能够是css。并不能加js等功能。</p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/15/hello-hexo-powered-by-me/" itemprop="url">
-                  hello hexo powered by me
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Diposting di</span>
-            <time itemprop="dateCreated" datetime="2016-12-15T15:01:28+08:00" content="2016-12-15">
-              2016-12-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/15/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Diposting di</span>
-            <time itemprop="dateCreated" datetime="2016-12-15T14:51:46+08:00" content="2016-12-15">
-              2016-12-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -710,6 +333,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -729,8 +356,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Daftar Isi
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Ikhtisar
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -773,6 +409,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-汇编的两种程序结构的写法"><span class="nav-number">1.</span> <span class="nav-text">1.汇编的两种程序结构的写法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#段的完整定义"><span class="nav-number">1.1.</span> <span class="nav-text">段的完整定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#段的简化定义形式"><span class="nav-number">1.2.</span> <span class="nav-text">段的简化定义形式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-硬件的操作方法"><span class="nav-number">2.</span> <span class="nav-text">2.硬件的操作方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#and，or操作指令"><span class="nav-number">2.1.</span> <span class="nav-text">and，or操作指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宏-简单的带参数的宏"><span class="nav-number">2.2.</span> <span class="nav-text">宏:简单的带参数的宏</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -869,6 +516,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
