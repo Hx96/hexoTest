@@ -170,7 +170,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -180,7 +180,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -234,7 +234,7 @@
               
                 
                 <a class="post-title-link" href="/2016/12/19/汇编考试总结/" itemprop="url">
-                  Untitled
+                  Unbenannt
                 </a>
               
             
@@ -246,7 +246,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-19T11:09:08+08:00" content="2016-12-19">
               2016-12-19
             </time>
@@ -282,9 +282,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">data segment</div><div class="line">ab 5</div><div class="line">data ends</div><div class="line"></div><div class="line">stack segment stack &apos;stack&apos;</div><div class="line">dw 1024 dup(0)</div><div class="line">stack ends</div><div class="line"></div><div class="line">extra segment</div><div class="line">db 6</div><div class="line">extra ends</div><div class="line"></div><div class="line">code segment</div><div class="line">assume cs:code,ds:data,ss:stack</div><div class="line">start:</div><div class="line">mov ax,data</div><div class="line">mov ds,ax</div><div class="line">mov ax,extra</div><div class="line">mov es,ax</div><div class="line"></div><div class="line">mov ax,4c00h</div><div class="line">int 21h</div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
 <h2 id="段的简化定义形式"><a href="#段的简化定义形式" class="headerlink" title="段的简化定义形式"></a>段的简化定义形式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">.model small		;说明采用小模型</div><div class="line">.stack 1024			;说明定义堆栈段</div><div class="line">.data				;说明数据段开始</div><div class="line">mess db &apos;hello&apos;,0dh,0ah,&apos;$&apos;</div><div class="line">.code 				;说明代码段开始</div><div class="line">start:</div><div class="line">	mov ax,dgroup	;说明代码段的开始</div><div class="line">	mov ds,ax		;置入数据段寄存器ds</div><div class="line">	mov dx,offset mess</div><div class="line">	mov ah,09h</div><div class="line">	int 21h</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">	end start		;程序结束</div></pre></td></tr></table></figure>
 <h1 id="2-硬件的操作方法"><a href="#2-硬件的操作方法" class="headerlink" title="2.硬件的操作方法"></a>2.硬件的操作方法</h1><h2 id="and，or操作指令"><a href="#and，or操作指令" class="headerlink" title="and，or操作指令"></a>and，or操作指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">and;将数据清零就是复位 例子:and al,07f</div><div class="line">or将数据置1		  例子:or al,01h将最低位置1</div></pre></td></tr></table></figure>
-<h2 id="宏-简单的带参数的宏"><a href="#宏-简单的带参数的宏" class="headerlink" title="宏:简单的带参数的宏"></a>宏:简单的带参数的宏</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">;程序片段使用次数过多，为了避免重复书写，那么可以把它定义成为一条宏指令</div><div class="line">;定义格式</div><div class="line"></div><div class="line">;宏指令名 macro [形式参数表]</div><div class="line">;endm</div><div class="line"></div><div class="line">;macro和endm是一对伪指令宏定义时必须成对出现</div><div class="line"></div><div class="line">;实例:将dos1号功能从键盘读入一个字符的程序片段定义为一个宏</div><div class="line">getchar macro</div><div class="line">	mov ah,01h</div><div class="line">	int 21h</div><div class="line">	endm</div></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"hello hlight!!!"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h2 id="宏-简单的带参数的宏"><a href="#宏-简单的带参数的宏" class="headerlink" title="宏:简单的带参数的宏"></a>宏:简单的带参数的宏</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">;程序片段使用次数过多，为了避免重复书写，那么可以把它定义成为一条宏指令</div><div class="line">;定义格式</div><div class="line"></div><div class="line">;宏指令名 macro [形式参数表]</div><div class="line">;endm</div><div class="line"></div><div class="line">;调用宏指令方式</div><div class="line">;宏指令名 [实参列表]</div><div class="line">;macro和endm是一对伪指令宏定义时必须成对出现</div><div class="line"></div><div class="line">;实例:将dos1号功能从键盘读入一个字符的程序片段定义为一个宏</div><div class="line">getchar macro</div><div class="line">	mov ah,01h</div><div class="line">	int 21h</div><div class="line">	endm</div><div class="line"></div><div class="line">;调用 </div><div class="line">getchar</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">;实例</div><div class="line">SetOne macro value</div><div class="line">mov ax,value</div><div class="line">and ax,0fffEh	;将最低位置0</div><div class="line">endm</div><div class="line">;调用</div><div class="line">SetOne x</div></pre></td></tr></table></figure>
+<h2 id="如何统计2进制中一的个数"><a href="#如何统计2进制中一的个数" class="headerlink" title="如何统计2进制中一的个数"></a>如何统计2进制中一的个数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">countOne macro value</div><div class="line">xor cx,cx</div><div class="line">mov bx,16</div><div class="line">mov ax,value</div><div class="line">next:</div><div class="line">rcl ax,1</div><div class="line">jnc nextBit</div><div class="line">inc cx</div><div class="line">nextBit:</div><div class="line">dec bx</div><div class="line">jnz next</div><div class="line">endm</div></pre></td></tr></table></figure>
+<h1 id="3-超过机器字长该如何计算"><a href="#3-超过机器字长该如何计算" class="headerlink" title="3.超过机器字长该如何计算"></a>3.超过机器字长该如何计算</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">;32位长的数据(带符号,不带符号)的加减运算，不考虑进位。机器字长:16 32 64</div><div class="line">;运算次数:运算的数据的位长/机器字长 32/16=2次</div><div class="line">.model small</div><div class="line">.stack 1024</div><div class="line">.data</div><div class="line">x dd 1234 5678h</div><div class="line">y dd 1234 f123h</div><div class="line">sum dd ?</div><div class="line">.code</div><div class="line">start:</div><div class="line">mov ax,dgroup</div><div class="line">mov ds,ax</div><div class="line"></div><div class="line">mov ax,word ptr x</div><div class="line">add ax,word ptr y				;注意次数是add。</div><div class="line">mov bx,word ptr x+2</div><div class="line">adc bx,word ptr y+2				;注意此处是adc 要加上低位的进位，写错会扣分。</div><div class="line">mov word ptr sum,ax</div><div class="line">mov word ptr sum+2,bx</div><div class="line">mov ax,4c00h</div><div class="line">int 21h</div><div class="line"></div><div class="line">end start</div></pre></td></tr></table></figure>
+<h1 id="4-不同类型的数据如何混合运算-先转化为统一的数据类型再运算"><a href="#4-不同类型的数据如何混合运算-先转化为统一的数据类型再运算" class="headerlink" title="4.不同类型的数据如何混合运算:先转化为统一的数据类型再运算"></a>4.不同类型的数据如何混合运算:先转化为统一的数据类型再运算</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">;x db -5,y dd 6运算x+y</div><div class="line">;无符号数</div><div class="line">;mov al,x mov ah,0 mov dx,0		dx:ax数据为0000006</div><div class="line">;有符号数 mov al,x cbw cwd       dx:ax数据为补码表示的负数</div><div class="line">.model small</div><div class="line">.stack 1024</div><div class="line">.data</div><div class="line">x db -5</div><div class="line">y dd 6</div><div class="line">sum dd ?</div><div class="line">.code</div><div class="line">start:</div><div class="line">	mov ax,dgroup</div><div class="line">	mov ds,ax</div><div class="line">	mov al,x</div><div class="line">	cbw</div><div class="line">	cwd</div><div class="line">	mov bx,word ptr y</div><div class="line">	mov cx,word ptr y+2</div><div class="line">	add ax,bx</div><div class="line">	adc dx,cx					;注意adc需要进位</div><div class="line">	mov word ptr sum,ax</div><div class="line">	mov word ptr sum+2,dx</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">end start</div></pre></td></tr></table></figure>
+<h2 id="逻辑运算短路问题"><a href="#逻辑运算短路问题" class="headerlink" title="逻辑运算短路问题"></a>逻辑运算短路问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">;没有写完整的程序直接写的思路</div><div class="line">;||或运算前面成立直接跳转结束不会运算后面;&amp;&amp;前面运算结果不成立直接结束运算不会运算后面一个表达式。</div><div class="line">;int a=2,b=3,c=2,d=3; (m=a&gt;b)||(n=c&gt;d)</div><div class="line">    mov ax,a</div><div class="line">    cmp ax,b</div><div class="line">    jg greater		;||或运算直接结束程序</div><div class="line">    mov m,0;</div><div class="line">	mov ax,c</div><div class="line">	cmp ax,d</div><div class="line">	jl lesser		;小于跳转</div><div class="line">	mov n,1</div><div class="line">	jmp endproc</div><div class="line">lesser:</div><div class="line">	mov n,0</div><div class="line">	jmp endproc</div><div class="line">greater:</div><div class="line">	mov m,1;</div><div class="line">endproc:</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h			;或运算例子</div></pre></td></tr></table></figure>
+<h1 id="5-块数据处理"><a href="#5-块数据处理" class="headerlink" title="5.块数据处理"></a>5.块数据处理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">;char* buf = malloc(sizeof(int)*SIZE)</div><div class="line">;memset(buf,0)		;清零  c语言</div><div class="line">;不用串指令和用串指令</div></pre></td></tr></table></figure>
+<h2 id="不用串指令"><a href="#不用串指令" class="headerlink" title="不用串指令"></a>不用串指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">;目的 在8000:0 后的256个单元填充55这个值</div><div class="line">    mov ax,8000</div><div class="line">    mov ds,ax</div><div class="line">    mov si,0</div><div class="line">    mov cx,256</div><div class="line">next:</div><div class="line">	mov ds:[si],55</div><div class="line">	inc si</div><div class="line">	loop next</div></pre></td></tr></table></figure>
+<h2 id="使用串指令"><a href="#使用串指令" class="headerlink" title="使用串指令"></a>使用串指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">;目的 在8000:0 后的256个单元填充55这个值</div><div class="line">.model small</div><div class="line">.stack 1024</div><div class="line">.code</div><div class="line">start:</div><div class="line">	mov ax,8000h</div><div class="line">	mov es,ax</div><div class="line">	mov al,55h</div><div class="line">	mov ds:[si],al</div><div class="line">	mov cx,256</div><div class="line">	cld				;清除方向标志</div><div class="line">	rep stosb		;先判断cx是否为0，为0则结束，否则cx-1。</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">end start</div><div class="line">;已测试</div><div class="line">;串操作指令源操作数 ds:si 目的操作数 es:di</div><div class="line">;字符串装入指令loadsb 取一字节数据相当于 mov al,ds:[si] inc si</div><div class="line">;字符串存储指令stosb  将ds:si一个字节的数给 es:di 并且将di的值+1 相当于 mov es:[di],al inc di</div><div class="line">;loadsw stosw 只是变成两个字节 记住cld清除方向标志</div></pre></td></tr></table></figure>
+<h1 id="未完待续！！！"><a href="#未完待续！！！" class="headerlink" title="未完待续！！！"></a>未完待续！！！</h1>
           
         
       
@@ -334,7 +341,7 @@
               
                 
                 <a class="post-title-link" href="/2016/12/17/2016年12月6级作文/" itemprop="url">
-                  Untitled
+                  Unbenannt
                 </a>
               
             
@@ -346,7 +353,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-17T21:30:39+08:00" content="2016-12-17">
               2016-12-17
             </time>
@@ -444,7 +451,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-16T10:00:15+08:00" content="2016-12-16">
               2016-12-16
             </time>
@@ -541,7 +548,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-15T15:01:28+08:00" content="2016-12-15">
               2016-12-15
             </time>
@@ -634,7 +641,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-15T14:51:46+08:00" content="2016-12-15">
               2016-12-15
             </time>
@@ -744,7 +751,7 @@
           <div class="site-state-item site-state-posts">
             <a href="/archives">
               <span class="site-state-item-count">5</span>
-              <span class="site-state-item-name">posts</span>
+              <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
 
@@ -754,7 +761,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -798,7 +805,7 @@
 </div>
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
