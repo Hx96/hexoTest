@@ -170,7 +170,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -180,7 +180,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -234,7 +234,7 @@
               
                 
                 <a class="post-title-link" href="/2016/12/19/汇编考试总结/" itemprop="url">
-                  Untitled
+                  Unbenannt
                 </a>
               
             
@@ -246,7 +246,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-19T11:09:08+08:00" content="2016-12-19">
               2016-12-19
             </time>
@@ -290,14 +290,37 @@
 <h2 id="逻辑运算短路问题"><a href="#逻辑运算短路问题" class="headerlink" title="逻辑运算短路问题"></a>逻辑运算短路问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">;没有写完整的程序直接写的思路</div><div class="line">;||或运算前面成立直接跳转结束不会运算后面;&amp;&amp;前面运算结果不成立直接结束运算不会运算后面一个表达式。</div><div class="line">;int a=2,b=3,c=2,d=3; (m=a&gt;b)||(n=c&gt;d)</div><div class="line">    mov ax,a</div><div class="line">    cmp ax,b</div><div class="line">    jg greater		;||或运算直接结束程序</div><div class="line">    mov m,0;</div><div class="line">	mov ax,c</div><div class="line">	cmp ax,d</div><div class="line">	jl lesser		;小于跳转</div><div class="line">	mov n,1</div><div class="line">	jmp endproc</div><div class="line">lesser:</div><div class="line">	mov n,0</div><div class="line">	jmp endproc</div><div class="line">greater:</div><div class="line">	mov m,1;</div><div class="line">endproc:</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h			;或运算例子</div></pre></td></tr></table></figure>
 <h1 id="5-块数据处理"><a href="#5-块数据处理" class="headerlink" title="5.块数据处理"></a>5.块数据处理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">;char* buf = malloc(sizeof(int)*SIZE)</div><div class="line">;memset(buf,0)		;清零  c语言</div><div class="line">;不用串指令和用串指令</div></pre></td></tr></table></figure>
 <h2 id="不用串指令"><a href="#不用串指令" class="headerlink" title="不用串指令"></a>不用串指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">;目的 在8000:0 后的256个单元填充55这个值</div><div class="line">    mov ax,8000</div><div class="line">    mov ds,ax</div><div class="line">    mov si,0</div><div class="line">    mov cx,256</div><div class="line">next:</div><div class="line">	mov ds:[si],55</div><div class="line">	inc si</div><div class="line">	loop next</div></pre></td></tr></table></figure>
-<h2 id="使用串指令"><a href="#使用串指令" class="headerlink" title="使用串指令"></a>使用串指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">字符串操作指令</div><div class="line">源操作数: ds:[si]</div><div class="line">目的操作数: es:[di]</div><div class="line">1.字符串装入指令 loadsb loadsw ;loadsb将一个字符装入al中，并且使si+1</div><div class="line">2.字符串存储指令 stosb	 stosw	;stosb将al中的字符装入es:[di]中，并且使di+1</div><div class="line">3.字符串扫描指令 scansb scansw ;将al内容与es:[di]内容相减，结果在标志位中，并且di+1</div><div class="line">4.重复前缀指令 rep ;重复串操作指令动作先判断cx是否为0，为0则结束,否则cx-1。</div><div class="line">5.重复前缀指令 repz ;即是repzero 除了检查cx外，还要检查zf的值。</div></pre></td></tr></table></figure>
+<h2 id="使用串指令"><a href="#使用串指令" class="headerlink" title="使用串指令"></a>使用串指令</h2><h3 id="字符串操作指令"><a href="#字符串操作指令" class="headerlink" title="字符串操作指令"></a>字符串操作指令</h3><p>源操作数: ds:[si]<br>目的操作数: es:[di]<br>1.字符串装入指令 loadsb loadsw ;loadsb将一个字符装入al中，并且使si+1<br>2.字符串存储指令 stosb     stosw    ;stosb将al中的字符装入es:[di]中，并且使di+1<br>3.字符串扫描指令 scansb scansw ;将al内容与es:[di]内容相减，结果在标志位中，并且di+1<br>4.重复前缀指令 rep ;重复串操作指令动作先判断cx是否为0，为0则结束,否则cx-1。<br>5.重复前缀指令 repz ;即是repzero 除了检查cx外，还要检查zf的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">;目的 在8000:0 后的256个单元填充55这个值</div><div class="line">.model small</div><div class="line">.stack 1024</div><div class="line">.code</div><div class="line">start:</div><div class="line">	mov ax,8000h</div><div class="line">	mov es,ax</div><div class="line">	mov al,55h</div><div class="line">	mov ds:[si],al</div><div class="line">	mov cx,256</div><div class="line">	cld				;清除方向标志</div><div class="line">	rep stosb		;rep操作指令和loop相似但是又有不同loop是先减一再判断rep先判断cx是否为0，为0则结束,否则cx-1。</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">end start</div><div class="line">;已测试</div><div class="line">;串操作指令源操作数 ds:si 目的操作数 es:di</div><div class="line">;字符串装入指令loadsb 取一字节数据相当于 mov al,ds:[si] inc si</div><div class="line">;字符串存储指令stosb  将ds:si一个字节的数给 es:di 并且将di的值+1 相当于 mov es:[di],al inc di</div><div class="line">;loadsw stosw 只是变成两个字节 记住cld清除方向标志</div></pre></td></tr></table></figure>
 <h1 id="6-端口操作指令"><a href="#6-端口操作指令" class="headerlink" title="6.端口操作指令"></a>6.端口操作指令</h1><h2 id="I-O端口I-O指令"><a href="#I-O端口I-O指令" class="headerlink" title="I/O端口I/O指令"></a>I/O端口I/O指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">;I/O端口 计算机与硬件之间的接口</div><div class="line">;I/O指令 8086需要专门的指令来存取端口上的寄存器，也就是要用专门的I/O指令进行输入输出</div><div class="line">(1)输入指令 从一个输入端口读取一个字或一个字节，传送至al中或ax中</div><div class="line">in 累加器，端口地址</div><div class="line">in al,21h	;21h为端口地址</div><div class="line">in ax,word</div><div class="line">in al,dx</div><div class="line">in ax,dx</div><div class="line">(2)输出指令 从al中一个字或者ax一个字节输出到指定端口</div><div class="line">out 端口地址，累加器</div><div class="line">out	port,al</div><div class="line">out port,ax</div><div class="line">out dx,al</div><div class="line">out dx,ax</div><div class="line">;出为一个字时，dx:2fch ax:4523h</div><div class="line">out dx,ax</div><div class="line">;在2fch中输出23h，2fdh输出45h</div></pre></td></tr></table></figure>
-<h2 id="数据传送方式"><a href="#数据传送方式" class="headerlink" title="数据传送方式"></a>数据传送方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">cpu与外设之间交换的信息包括1.数据2.状态和3.控制信息。采用区分端口将他们区已分别</div><div class="line">;输入数据前检查状态是否准备好</div><div class="line">;输出数据前检查状态是否忙</div><div class="line">数据传送方式</div><div class="line">（1）无条件传送方式。 不许查询状态，已知外设已准备好或不忙时直接用in,out指令实现数据传送。</div><div class="line">（2）查询方式，在（1）的条件下，在in，out前进行查询，查询准备好输入，未准备好则输出;;（重点掌握 实验七）</div><div class="line">（3）中断方式，提高效率，中断方式。cpu准备好，外设发出中断请求，cpu输入中断处理程序，完成输入输出工作。</div><div class="line">（4）直接存储器传送(DMA)方式。</div></pre></td></tr></table></figure>
+<h2 id="数据传送方式"><a href="#数据传送方式" class="headerlink" title="数据传送方式"></a>数据传送方式</h2><p>cpu与外设之间交换的信息包括1.数据2.状态和3.控制信息。采用区分端口将他们区已分别<br>（1）输入数据前检查状态是否准备好<br>（2）输出数据前检查状态是否忙</p>
+<h3 id="数据传送方式-1"><a href="#数据传送方式-1" class="headerlink" title="数据传送方式"></a>数据传送方式</h3><p>（1）无条件传送方式。 不许查询状态，已知外设已准备好或不忙时直接用in,out指令实现数据传送。<br>（2）查询方式，在（1）的条件下，在in，out前进行查询，查询准备好输入，未准备好则输出;;（重点掌握 实验七）<br>（3）中断方式，提高效率，中断方式。cpu准备好，外设发出中断请求，cpu输入中断处理程序，完成输入输出工作。<br>（4）直接存储器传送(DMA)方式。</p>
 <h2 id="RT-CMOS芯片"><a href="#RT-CMOS芯片" class="headerlink" title="RT/CMOS芯片"></a>RT/CMOS芯片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RT/CMOS芯片 I/O接口芯片 保存系统配置状况，记录世纪年在内的(Real_Time Clock)信息。</div><div class="line">;存取CMOS RAM</div><div class="line">1读操作代码片段</div><div class="line">mov al,n		;n是你要访问的单元地址</div><div class="line">out 70h,al		;把要访问单元的地址送地址端口</div><div class="line">jmp $ + 2</div><div class="line">in al,71h		;从数据端口读取访问单元的内容</div><div class="line">2.写代码操作片段</div><div class="line">mov al,n</div><div class="line">out 70h,al		;把要访问单元的地址送地址端口</div><div class="line">jmp $ + 2</div><div class="line">mov al,m		;m是要输出的数据</div><div class="line">out 71h,al		;把数据从数据端口输出</div><div class="line">;需要指出在对同一个I/O端口设备进行操作时，为确保，有足够的电路恢复时间，一般在I/O指令前使用一条转移指令jmp ;$+2</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">;实例已测试 从RT/CMOS 芯片中读取时分秒出来</div><div class="line">.model small</div><div class="line">.stack 1024</div><div class="line">.data</div><div class="line">n db 0</div><div class="line">sec db ?</div><div class="line">min db ?</div><div class="line">hour db ?</div><div class="line">.code</div><div class="line">start:</div><div class="line">	mov ax,dgroup</div><div class="line">	mov ds,ax</div><div class="line">	</div><div class="line">	mov al,n		;n是你要访问的单元地址</div><div class="line">	out 70h,al		;把要访问单元的地址送地址端口</div><div class="line">	jmp $+2			;延时处理</div><div class="line">	in al,71h		;从数据端口读取访问单元的内容</div><div class="line">	mov sec,al</div><div class="line">	</div><div class="line">	mov al,02h</div><div class="line">	out 70h,al</div><div class="line">	jmp $+2</div><div class="line">	in al,71h</div><div class="line">	mov min,al</div><div class="line">	</div><div class="line">	mov al,04h</div><div class="line">	out 70h,al</div><div class="line">	jmp $+2</div><div class="line">	in al,71h</div><div class="line">	mov hour,al</div><div class="line">	</div><div class="line">	mov ax,4c00h</div><div class="line">	int 21h</div><div class="line">end start</div></pre></td></tr></table></figure>
 <h2 id="查询方式传送数据"><a href="#查询方式传送数据" class="headerlink" title="查询方式传送数据"></a>查询方式传送数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">;外设的速度和CPU速度不匹配</div><div class="line">;查询输入输出</div><div class="line">in al,端口号</div><div class="line">out 端口号，累加器</div><div class="line">;程序功能检测state是否为0,状态为0不可写入2d1data端口寄存器,当state不为0，即是2d0端口内容不为0就将数据写入data。</div><div class="line">state 2d0h</div><div class="line">data 2d1h</div><div class="line"></div><div class="line">	mov dx,2d0h</div><div class="line">again:</div><div class="line">	in al,dx			;读取dx中的数据到al中</div><div class="line">	and al,80h			;检验al高位是否为0</div><div class="line">	jnz print</div><div class="line">	jmp again</div><div class="line">print:</div><div class="line">	mov dx,2d1h</div><div class="line">	mov al,&apos;a&apos;</div><div class="line">	out dx,al</div></pre></td></tr></table></figure>
-<h1 id="未完待续！！！"><a href="#未完待续！！！" class="headerlink" title="未完待续！！！"></a>未完待续！！！</h1>
+<h2 id="中断服务程序"><a href="#中断服务程序" class="headerlink" title="中断服务程序"></a>中断服务程序</h2><h3 id="中断和中断源"><a href="#中断和中断源" class="headerlink" title="中断和中断源"></a>中断和中断源</h3><p>中断:使cpu挂起而去处理特殊事件的操作</p>
+<p>中断源:引起中断的事件称作中断源</p>
+<h3 id="中断传送方式"><a href="#中断传送方式" class="headerlink" title="中断传送方式"></a>中断传送方式</h3><p>外设完成一个数据的输入或者输出，向cpu发出中断请求，cpu挂起正在执行的程序，转去执行输入、或者输出程序，在完成输入或者输出后，返回原程序继续执行，每中断一次，只传送一次中断数据。</p>
+<h3 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h3><p>键盘中断09，内部除法中断为0等等。为了使系统响应中断后，cpu能快速的转入相应的中断处理程序，系统采用一张表来保存这些中断处理程序的入口地址，该表就称为中断向量表。每一项保存一个中断处理程序的入口地址，它相当于一个指向中断处理程序的指针，所以称它为中断向量。</p>
+<h3 id="设置和获取中断向量"><a href="#设置和获取中断向量" class="headerlink" title="设置和获取中断向量"></a>设置和获取中断向量</h3><p>下面的程序片断直接设置n号中断向量，假设对应中断处理程序的入口标号是inthand。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">inthand:</div><div class="line">	...</div><div class="line">	...</div><div class="line">	mov ax,0</div><div class="line">	mov ds,ax</div><div class="line">	mob bx,n*4			;准备设置n号中断向量</div><div class="line">	cli					;关中断</div><div class="line">	mov word ptr [bx],offset inthand	;置偏移</div><div class="line">	mov word ptr [bx+2],seg inthand		;置段值</div><div class="line">	sti</div><div class="line">	...</div><div class="line">	...</div></pre></td></tr></table></figure>
+<p>上述代码不安全所以一般使用25h号系统功能的调用来设置中断向量，这可以避免考虑很多细节(考试中使用)。</p>
+<p>25号系统功能调用是设置中断向量，其入口参数如下</p>
+<p>al = 中断向量号</p>
+<p>ds = 中断处理程序入口地址的段值</p>
+<p>dx = 中断处理程序入口地址的偏移</p>
+<p>下面的程序片段是设置n号中断向量，假设对应中断处理程序入口标号是inthand。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">inthand:</div><div class="line">	...</div><div class="line">	...</div><div class="line">	mov ax,seg inthand</div><div class="line">	mov ds,ax</div><div class="line">	mov dx,offset inthand</div><div class="line">	mov ah,25h</div><div class="line">	mov al,n		;n是需要改变的中断向量号</div><div class="line">	int 21h</div><div class="line">	...</div><div class="line">	...</div></pre></td></tr></table></figure>
+<p>有时需要取得中断向量，例如:在应用程序中需要用自己的中断处理程序来代替系统中原有的某个中断处理程序，先保存原中断向量，待程序结束后再恢复原中断向量。</p>
+<p>入口参数:</p>
+<p>​    al = 中断向量号</p>
+<p>出口参数:</p>
+<p>​    es = 中断处理程序地址的段值</p>
+<p>​    bx = 中断处理程序入口地址的偏移</p>
+<p>下面的程序片段取得n号中断向量，并将其保存到双字变量oldvector中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">...</div><div class="line">mov ah,35h</div><div class="line">mov al,n</div><div class="line">int 21h</div><div class="line">mov word ptr oldvector,es</div><div class="line">mov word ptr oldvector,bx</div><div class="line">...</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>重点为25号功能和35号功能，各个参数的入口地址，看了这个文档再看实验七两者结合看会很好看懂。</p>
+<h1 id="7-子程序"><a href="#7-子程序" class="headerlink" title="7.子程序"></a>7.子程序</h1><h1 id="未完待续！！！"><a href="#未完待续！！！" class="headerlink" title="未完待续！！！"></a>未完待续！！！</h1>
           
         
       
@@ -347,7 +370,7 @@
               
                 
                 <a class="post-title-link" href="/2016/12/17/2016年12月6级作文/" itemprop="url">
-                  Untitled
+                  Unbenannt
                 </a>
               
             
@@ -359,7 +382,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-17T21:30:39+08:00" content="2016-12-17">
               2016-12-17
             </time>
@@ -457,7 +480,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-16T10:00:15+08:00" content="2016-12-16">
               2016-12-16
             </time>
@@ -554,7 +577,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-15T15:01:28+08:00" content="2016-12-15">
               2016-12-15
             </time>
@@ -647,7 +670,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
             <time itemprop="dateCreated" datetime="2016-12-15T14:51:46+08:00" content="2016-12-15">
               2016-12-15
             </time>
@@ -757,7 +780,7 @@
           <div class="site-state-item site-state-posts">
             <a href="/archives">
               <span class="site-state-item-count">5</span>
-              <span class="site-state-item-name">posts</span>
+              <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
 
@@ -767,7 +790,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -811,7 +834,7 @@
 </div>
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
